@@ -1,0 +1,15 @@
+Xource
+Copyright 2026 Exowatt, Inc.
+
+This software depends on psycopg (LGPL-3.0-only), loaded dynamically from the
+user's Python environment; neither its source nor a modified copy is included
+in this repository. psycopg[binary] wheels may include libpq/OpenSSL runtime
+components; retain upstream license notices when redistributing wheels.
+
+PDF and image previews use pypdfium2 (Apache-2.0 OR BSD-3-Clause), PDFium
+(BSD-style with build-specific third-party notices), and Pillow (HPND).
+See backend/THIRD_PARTY_NOTICES.md for PDFium redistribution details. Browser
+UI uses system fonts and a project-original geometric SVG icon; no branded
+or externally licensed graphic/font assets are included. The frontend build
+uses Lightning CSS and optional platform packages (MPL-2.0) as dev-only
+transitive dependencies of Vite; none are bundled in the generated web UI.

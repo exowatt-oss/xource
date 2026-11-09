@@ -1,0 +1,38 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: xource
+          POSTGRES_PASSWORD: xource
+          POSTGRES_DB: xource_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U xource" --health-interval 10s
+          --health-timeout 5s --health-retries 5
+    env:
+      CI: 'true'
+      TEST_DATABASE_URL: postgresql+psycopg://xource:xource@127.0.0.1:5432/xource_test
+      STORAGE_PATH: ./data/blobs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: '3.12'
+      - run: cd backend && uv sync --locked && uv run ruff check --isolated --select E4,E7,E9,F src tests && uv run pytest -q
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: cd frontend && npm ci && npm run build && npm test -- --maxWorkers=4

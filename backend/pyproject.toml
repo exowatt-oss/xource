@@ -1,0 +1,40 @@
+[project]
+name = "xource-server"
+version = "0.1.0"
+description = "Self-hosted immutable-version file storage and MCP API"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+dependencies = [
+    "fastapi>=0.139.0",
+    "uvicorn[standard]>=0.50.2",
+    "pydantic-settings>=2.14.2",
+    "python-dotenv>=1.2.2",
+    "sqlalchemy>=2.0.51",
+    "psycopg[binary]>=3.3.4",
+    "structlog>=26.1.0",
+    "httpx>=0.28.1,<1",
+    "python-multipart>=0.0.20",
+    "forwarded-auth[mcp] @ git+https://github.com/exowatt-oss/forwarded-auth@2a3463c4ed4da46591f4c0ec930bb3483e12dafd",
+    "mcp>=1.10,<2",
+    "pypdfium2>=5.14.0,<6",
+    "pillow>=12.3.0",
+    "defusedxml>=0.7.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[dependency-groups]
+dev = ["ruff>=0.15.20", "pytest>=9.1.1", "httpx>=0.28.1", "pytest-asyncio>=1.4.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/app"]
